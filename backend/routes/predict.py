@@ -3,7 +3,8 @@ Smart Electricity Bill Predictor - Prediction Routes (v2.0)
 Handles 22+ home appliances, TGSPDCL official slabs, category analytics & What-If simulator.
 """
 
-from typing import Dict, Any, List, Optional
+from __future__ import annotations
+from typing import Dict, Any, List, Optional, Tuple
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Depends, HTTPException
 

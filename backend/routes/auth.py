@@ -31,27 +31,27 @@ OTP_STORE = {}
 # Schemas
 # --------------------------------------------------------------------------
 class UserRegister(BaseModel):
-    email: EmailStr
+    email: str
     password: str
     full_name: str = "Eco User"
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 class GoogleAuthPayload(BaseModel):
     credential: Optional[str] = None # Google ID Token
     access_token: Optional[str] = None # Google OAuth Access Token
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     full_name: Optional[str] = None
     google_id: Optional[str] = None
     avatar_url: Optional[str] = None
 
 class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+    email: str
 
 class ResetPasswordRequest(BaseModel):
-    email: EmailStr
+    email: str
     otp: str
     new_password: str
 
