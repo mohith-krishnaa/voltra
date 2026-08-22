@@ -19,7 +19,8 @@ from data.generate_dataset import APPLIANCE_SPECS, calculate_physics_units
 
 router = APIRouter(prefix="/api", tags=["prediction"])
 
-MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..", "model", "bill_model.joblib")
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+MODEL_PATH = os.path.join(ROOT_DIR, "model", "bill_model.joblib")
 _cached_model = None
 
 def get_model():
