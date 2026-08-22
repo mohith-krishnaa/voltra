@@ -3,11 +3,6 @@ Smart Electricity Bill Predictor - Prediction Routes (v2.0)
 Handles 22+ home appliances, TGSPDCL official slabs, category analytics & What-If simulator.
 """
 
-import os
-import sys
-import joblib
-import pandas as pd
-import numpy as np
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Depends, HTTPException
@@ -18,22 +13,6 @@ from backend.utils.validation import sanitize_household_input, sanitize_applianc
 from data.generate_dataset import APPLIANCE_SPECS, calculate_physics_units
 
 router = APIRouter(prefix="/api", tags=["prediction"])
-
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-MODEL_PATH = os.path.join(ROOT_DIR, "model", "bill_model.joblib")
-_cached_model = None
-
-def get_model():
-    """Lazy loader for trained Scikit-learn Pipeline."""
-    global _cached_model
-    if _cached_model is None:
-        if os.path.exists(MODEL_PATH):
-            try:
-                _cached_model = joblib.load(MODEL_PATH)
-            except Exception as e:
-                print(f"[Model] Warning loading model: {e}")
-                _cached_model = None
-    return _cached_model
 
 # --- Pydantic Schemas ---
 class ApplianceUsage(BaseModel):
