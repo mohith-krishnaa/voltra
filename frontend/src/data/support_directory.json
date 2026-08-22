@@ -1,0 +1,67 @@
+﻿{
+  "last_updated": "22-Aug-2026",
+  "disclaimer": "Customer care lines, emergency breakdown helplines, and section office addresses are sourced from published state discom circulars. Please verify with local electricity board notices before official correspondence.",
+  "toll_free_national": {
+    "title": "National Power Helpline (All India)",
+    "number": "1912",
+    "description": "24x7 Emergency power breakdown, transformer failure, and billing grievance toll-free helpline across Indian discoms."
+  },
+  "discoms": [
+    {
+      "code": "TGSPDCL",
+      "name": "Telangana Southern Power Distribution Company Ltd",
+      "state": "Telangana",
+      "headquarters": "Mint Compound, Hyderabad - 500063",
+      "helpline_24x7": "1912 / 1800-425-0028",
+      "whatsapp_bot": "+91 94408 19120",
+      "official_portal": "https://www.tgspdcl.com",
+      "key_circles": [
+        { "circle": "Hyderabad Central (Mint Compound)", "phone": "040-23454884", "address": "Mint Compound, Hyderabad" },
+        { "circle": "Hyderabad South (Charminar)", "phone": "040-24528822", "address": "Charminar Circle Office, Hyderabad" },
+        { "circle": "Cyber City (Madhapur / Hitec City)", "phone": "040-23118944", "address": "Madhapur Main Rd, Hyderabad" },
+        { "circle": "Ranga Reddy North (Secunderabad)", "phone": "040-27804422", "address": "Secunderabad Division Office" }
+      ]
+    },
+    {
+      "code": "BESCOM",
+      "name": "Bangalore Electricity Supply Company Ltd",
+      "state": "Karnataka",
+      "headquarters": "K.R. Circle, Bengaluru - 560001",
+      "helpline_24x7": "1912 / 080-22873333",
+      "whatsapp_bot": "+91 94831 91212",
+      "official_portal": "https://bescom.karnataka.gov.in",
+      "key_circles": [
+        { "circle": "Bengaluru East (Indiranagar)", "phone": "080-22975800", "address": "Indiranagar 100ft Road, Bengaluru" },
+        { "circle": "Bengaluru South (Jayanagar)", "phone": "080-22975400", "address": "9th Block Jayanagar, Bengaluru" },
+        { "circle": "Bengaluru North (Malleshwaram)", "phone": "080-22975200", "address": "8th Main Malleshwaram, Bengaluru" }
+      ]
+    },
+    {
+      "code": "TNEB",
+      "name": "Tamil Nadu Generation and Distribution Corp (TANGEDCO)",
+      "state": "Tamil Nadu",
+      "headquarters": "NPKRR Maaligai, 144 Anna Salai, Chennai - 600002",
+      "helpline_24x7": "94987 94987 / 1912",
+      "whatsapp_bot": "+91 94987 94987",
+      "official_portal": "https://www.tangedco.gov.in",
+      "key_circles": [
+        { "circle": "Chennai South (T. Nagar)", "phone": "044-28154545", "address": "T. Nagar Substation Complex, Chennai" },
+        { "circle": "Chennai North (Anna Nagar)", "phone": "044-26214545", "address": "Anna Nagar West, Chennai" },
+        { "circle": "Coimbatore Metro", "phone": "0422-2495555", "address": "Tatabad, Coimbatore" }
+      ]
+    },
+    {
+      "code": "MSEDCL",
+      "name": "Maharashtra State Electricity Distribution Co Ltd (Mahavitaran)",
+      "state": "Maharashtra",
+      "headquarters": "Prakashgad, Bandra (East), Mumbai - 400051",
+      "helpline_24x7": "1912 / 1800-233-3435",
+      "whatsapp_bot": "+91 99303 99303",
+      "official_portal": "https://www.mahadiscom.in",
+      "key_circles": [
+        { "circle": "Mumbai Urban (Bandra)", "phone": "022-26474211", "address": "Prakashgad, Bandra East, Mumbai" },
+        { "circle": "Pune Urban (Rasta Peth)", "phone": "020-26051122", "address": "Rasta Peth Division, Pune" }
+      ]
+    }
+  ]
+}

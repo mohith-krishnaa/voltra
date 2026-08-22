@@ -1,0 +1,67 @@
+﻿[
+  {
+    "id": "gpay_tgspdcl_cashback",
+    "provider": "Google Pay",
+    "provider_badge": "UPI / BillPay",
+    "title": "Up to ₹100 Cashback on TGSPDCL / State Discom Bills",
+    "description": "Pay electricity bill of ₹500 or more via GPay UPI BBPS and get a scratch card worth up to ₹100.",
+    "code": "GPAYPOWER",
+    "min_bill": 500,
+    "valid_till": "31-Aug-2026",
+    "discount_type": "Cashback",
+    "eligible_boards": ["TGSPDCL", "APSPDCL", "BESCOM", "TNEB", "MSEDCL"],
+    "action_url": "https://pay.google.com"
+  },
+  {
+    "id": "cred_power_jackpot",
+    "provider": "CRED",
+    "provider_badge": "CRED Pay",
+    "title": "Flat ₹75 Cashback on Residential Power Bills",
+    "description": "Pay electricity bill with CRED UPI or linked RuPay credit card to claim guaranteed cashback.",
+    "code": "CREDBILL75",
+    "min_bill": 1000,
+    "valid_till": "15-Sep-2026",
+    "discount_type": "Instant Discount",
+    "eligible_boards": ["All State Discoms"],
+    "action_url": "https://cred.club"
+  },
+  {
+    "id": "phonepe_bbps_recharge",
+    "provider": "PhonePe",
+    "provider_badge": "BBPS Verified",
+    "title": "Win up to 100% Electricity Bill Back (up to ₹250)",
+    "description": "Use PhonePe UPI on Bharat BillPay for electricity bill payments. Available for first-time monthly payers.",
+    "code": "PHONEPEPOWER",
+    "min_bill": 300,
+    "valid_till": "30-Sep-2026",
+    "discount_type": "Cashback Scratch Card",
+    "eligible_boards": ["TGSPDCL", "APSPDCL", "TNEB", "BESCOM", "UPPCL", "BSES"],
+    "action_url": "https://phonepe.com"
+  },
+  {
+    "id": "amazon_pay_utility",
+    "provider": "Amazon Pay",
+    "provider_badge": "Amazon Rewards",
+    "title": "Flat ₹50 Back on Bill Payments > ₹1,500",
+    "description": "Collect offer on Amazon Pay and complete payment via Amazon Pay UPI or ICICI Credit Card.",
+    "code": "AMZNPAY50",
+    "min_bill": 1500,
+    "valid_till": "05-Sep-2026",
+    "discount_type": "Amazon Pay Balance",
+    "eligible_boards": ["All State Discoms"],
+    "action_url": "https://amazon.in"
+  },
+  {
+    "id": "paytm_bijli_savings",
+    "provider": "Paytm",
+    "provider_badge": "Paytm UPI",
+    "title": "₹30 to ₹150 Cashback on Electricity Bills",
+    "description": "Apply promo code before paying your state electricity board bill.",
+    "code": "BIJLIPAY",
+    "min_bill": 800,
+    "valid_till": "31-Aug-2026",
+    "discount_type": "Promo Code Discount",
+    "eligible_boards": ["TGSPDCL", "APSPDCL", "BESCOM", "MSEDCL", "UPPCL"],
+    "action_url": "https://paytm.com"
+  }
+]

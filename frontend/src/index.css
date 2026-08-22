@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #F8F9FA;
+  --bg-secondary: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --color-orange: #E15B2D;
+  --color-navy: #1E293B;
+
+  font-family: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.dark {
+  --bg-primary: #0B0F17;
+  --bg-secondary: #111827;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Tabular figures for numbers, rupee amounts, and kwh metrics */
+.tabular-nums {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+code, kbd, samp, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ------------------------------------------------------------
+   FIXRIGHT TEMPLATE THEME: Clean Slate + Warm Coral Orange
+   ------------------------------------------------------------ */
+
+/* Primary Orange CTA Button */
+.btn-orange-primary {
+  background-color: #E15B2D;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 24px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px 0 rgba(225, 91, 45, 0.3);
+}
+.btn-orange-primary:hover {
+  background-color: #C84B20;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(225, 91, 45, 0.4);
+}
+.btn-orange-primary:active {
+  transform: scale(0.98);
+}
+
+/* Glass Dark Secondary Call Button */
+.btn-call-secondary {
+  background-color: rgba(15, 23, 42, 0.65);
+  color: #FFFFFF;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  padding: 12px 22px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease-out;
+}
+.btn-call-secondary:hover {
+  background-color: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Outline Card Button */
+.btn-outline-card {
+  background-color: transparent;
+  color: #0F172A;
+  font-weight: 600;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: all 0.15s ease-out;
+}
+.dark .btn-outline-card {
+  color: #F8FAFC;
+  border-color: #334155;
+}
+.btn-outline-card:hover {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
+}
+.dark .btn-outline-card:hover {
+  background-color: #1E293B;
+  border-color: #475569;
+}
+
+/* Clean Editorial Button Backwards-Compatibility */
+.editorial-btn-lime {
+  background-color: #E15B2D;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 22px;
+  transition: all 0.15s ease-out;
+}
+.editorial-btn-lime:hover {
+  background-color: #C84B20;
+  transform: translateY(-1px);
+}
+
+.editorial-btn-secondary {
+  background-color: #FFFFFF;
+  color: #0F172A;
+  font-weight: 600;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 12px 20px;
+  transition: all 0.15s ease-out;
+}
+.dark .editorial-btn-secondary {
+  background-color: #1E293B;
+  color: #F8FAFC;
+  border-color: #334155;
+}
+.editorial-btn-secondary:hover {
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+/* Accessible focus states */
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #E15B2D;
+  outline-offset: 2px;
+}
