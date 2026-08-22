@@ -4,10 +4,12 @@ Vercel Serverless Python Entrypoint for Voltra FastAPI Application
 import sys
 import os
 
-# Ensure the root directory is on the python path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Ensure the root directory and backend directory are in sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(current_dir)
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
 
 from backend.app import app
 
-# Vercel looks for the ASGI/WSGI app instance
-app = app
+# Expose app for ASGI/WSGI serverless invocation on Vercel
