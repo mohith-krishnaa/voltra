@@ -434,6 +434,8 @@ export default function App() {
             onViewOffices={() => setActiveTab('offices')}
             onViewOffers={() => setActiveTab('offers')}
             onViewSolar={() => setActiveTab('solar')}
+            onViewSplit={() => setActiveTab('split')}
+            onViewPay={() => setActiveTab('pay')}
             currencySymbol={currencySymbol}
           />
         )}

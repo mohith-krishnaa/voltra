@@ -2,10 +2,14 @@
 Smart Electricity Bill Predictor - SQLAlchemy Data Models
 """
 
+from __future__ import annotations
 import datetime
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from backend.database import Base
+
+def get_utc_now():
+    return datetime.datetime.now(datetime.timezone.utc)
 
 class User(Base):
     __tablename__ = "users"
@@ -14,7 +18,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     full_name = Column(String(100), default="Eco User")
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_utc_now)
 
     households = relationship("Household", back_populates="owner", cascade="all, delete-orphan")
 
@@ -28,10 +32,10 @@ class Household(Base):
     house_type = Column(String(50), default="Apartment-2BHK")
     area_sqft = Column(Float, default=1100.0)
     occupants = Column(Integer, default=3)
-    tariff_zone = Column(String(50), default="Tiered-Standard")
+    tariff_zone = Column(String(50), default="TGSPDCL-Telangana")
     monthly_budget_inr = Column(Float, default=3500.0)
     monthly_budget_units = Column(Float, default=400.0)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_utc_now)
 
     owner = relationship("User", back_populates="households")
     daily_logs = relationship("DailyLog", back_populates="household", cascade="all, delete-orphan")
@@ -48,7 +52,7 @@ class DailyLog(Base):
     daily_kwh = Column(Float, nullable=False)
     appliances_json = Column(Text, nullable=False) # JSON dictionary of appliance usages
     notes = Column(String(255), nullable=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_utc_now)
 
     household = relationship("Household", back_populates="daily_logs")
 
@@ -65,7 +69,7 @@ class PredictionRecord(Base):
     actual_units = Column(Float, nullable=True)
     actual_bill = Column(Float, nullable=True)
     breakdown_json = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=get_utc_now)
 
     household = relationship("Household", back_populates="predictions")
 
@@ -82,6 +86,8 @@ class Alert(Base):
     severity = Column(String(20), default="warning") # warning, danger, success, info
     projected_bill = Column(Float, nullable=True)
     budget_amount = Column(Float, nullable=True)
+    acknowledged = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=get_utc_now)
     household = relationship("Household", back_populates="alerts")
 
 
@@ -102,5 +108,4 @@ class PaymentTransaction(Base):
     payment_status = Column(String(30), default="SUCCESS") # SUCCESS, PENDING, FAILED
     promo_code = Column(String(30), nullable=True)
     receipt_json = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
-
+    created_at = Column(DateTime, default=get_utc_now)

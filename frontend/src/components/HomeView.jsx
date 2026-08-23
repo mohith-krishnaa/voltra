@@ -50,6 +50,8 @@ export default function HomeView({
   onViewOffices,
   onViewOffers,
   onViewSolar,
+  onViewSplit,
+  onViewPay,
   currencySymbol = "₹" 
 }) {
   const predictedUnits = predictionResult?.predicted_units || 324.3;
@@ -137,7 +139,7 @@ export default function HomeView({
       title: 'Roommate Bill Splitter',
       description: 'Appliance-weighted load division allocating AC runtime hours fairly with instant WhatsApp export.',
       icon: Users,
-      action: () => window.location.hash = '#split',
+      action: onViewSplit || (() => {}),
       badge: 'Shared Flats'
     },
     {

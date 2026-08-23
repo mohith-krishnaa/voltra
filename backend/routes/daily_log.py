@@ -89,7 +89,7 @@ def log_daily_usage(
     if payload.direct_kwh is not None and payload.direct_kwh > 0:
         daily_kwh = round(float(payload.direct_kwh), 2)
     elif payload.appliances:
-        daily_kwh = compute_daily_kwh(payload.appliances, season=household.house_type)
+        daily_kwh = compute_daily_kwh(payload.appliances, season="Summer")
     else:
         daily_kwh = 12.5 # Default fallback
 

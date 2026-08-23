@@ -516,12 +516,24 @@ export default function PaymentView({
                     onChange={(e) => setDiscom(e.target.value)}
                     className="w-full bg-[#0B0B0B] border border-white/10 rounded-lg px-3 py-2 text-[#F5F3ED] font-mono focus:outline-none focus:border-[#A3FF6B]"
                   >
-                    <option value="TGSPDCL-Telangana">TGSPDCL (Telangana South)</option>
-                    <option value="TSNPDCL-Telangana">TSNPDCL (Telangana North)</option>
-                    <option value="BESCOM-Karnataka">BESCOM (Bengaluru / Karnataka)</option>
-                    <option value="TNEB-TamilNadu">TNEB / TANGEDCO (Tamil Nadu)</option>
-                    <option value="MSEDCL-Maharashtra">MSEDCL (Maharashtra / Mahavitaran)</option>
-                    <option value="DGVCL-Gujarat">DGVCL (Gujarat Energy)</option>
+                    <optgroup label="TELANGANA (TSERC)">
+                      <option value="TGSPDCL-Telangana">TGSPDCL (Telangana Southern)</option>
+                      <option value="TGNPDCL-Telangana">TGNPDCL (Telangana Northern)</option>
+                    </optgroup>
+                    <optgroup label="ANDHRA PRADESH (APERC)">
+                      <option value="APSPDCL-AP">APSPDCL (Andhra Pradesh Southern)</option>
+                      <option value="APEPDCL-AP">APEPDCL (Andhra Pradesh Eastern)</option>
+                      <option value="APCPDCL-AP">APCPDCL (Andhra Pradesh Central)</option>
+                    </optgroup>
+                    <optgroup label="OTHER STATE DISCOMS">
+                      <option value="BESCOM-Karnataka">BESCOM (Bengaluru / Karnataka)</option>
+                      <option value="TANGEDCO-TamilNadu">TANGEDCO / TNEB (Tamil Nadu)</option>
+                      <option value="MSEDCL-Maharashtra">MSEDCL (Maharashtra Mahavitaran)</option>
+                      <option value="BSES-Delhi">BSES Rajdhani / Yamuna (Delhi NCT)</option>
+                      <option value="UPPCL-UP">UPPCL (Uttar Pradesh Power)</option>
+                      <option value="GUVCL-Gujarat">GUVCL (Gujarat Discoms)</option>
+                      <option value="KSEB-Kerala">KSEB (Kerala Electricity)</option>
+                    </optgroup>
                   </select>
                 </div>
 

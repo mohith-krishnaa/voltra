@@ -12,7 +12,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-export default function DailyTracker({ householdId = 1, currencySymbol = "?", onAlertsUpdated }) {
+export default function DailyTracker({ householdId = 1, currencySymbol = "₹", onAlertsUpdated }) {
   const [dailyLogs, setDailyLogs] = useState([]);
   const [adaptiveForecast, setAdaptiveForecast] = useState(null);
   const [newUnits, setNewUnits] = useState('');
@@ -60,8 +60,9 @@ export default function DailyTracker({ householdId = 1, currencySymbol = "?", on
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           household_id: householdId,
-          log_date: today,
-          units_consumed: parseFloat(newUnits)
+          date: today,
+          direct_kwh: parseFloat(newUnits),
+          notes: "Daily meter log"
         })
       });
 
