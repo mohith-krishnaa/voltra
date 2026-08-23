@@ -1,11 +1,40 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A3FF6B'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'/></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- Primary Meta Tags -->
     <title>⚡ Voltra — Smart Electricity Bill Predictor & Energy Intelligence</title>
-    <!-- Manrope & Inter Fonts -->
+    <meta name="title" content="⚡ Voltra — Smart Electricity Bill Predictor & Energy Intelligence" />
+    <meta name="description" content="AI-powered electricity bill forecasting, official TGSPDCL / AP / State utility slabs, Gruha Jyothi zero-bill subsidy tracker, PM Surya Ghar solar rooftop ROI, and fair roommate bill splitter." />
+    <meta name="theme-color" content="#0B0B0B" />
+    <meta name="keywords" content="electricity bill calculator, TGSPDCL bill prediction, APSPDCL bill, Gruha Jyothi scheme, PM Surya Ghar solar calculator, roommate bill splitter, TNEB bill calculator, BESCOM tariff" />
+    <meta name="author" content="Voltra Energy Technologies" />
+
+    <!-- PWA & Mobile Capabilities -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Voltra" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A3FF6B' width='180' height='180'><rect width='24' height='24' rx='6' fill='%230B0B0B'/><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2' fill='%23A3FF6B'/></svg>" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://voltra.netlify.app" />
+    <meta property="og:title" content="⚡ Voltra — Predict Your Electricity Bill with Precision" />
+    <meta property="og:description" content="Simulate 22+ home appliances, calculate progressive TG/AP utility slabs, track Gruha Jyothi subsidies, and calculate rooftop solar ROI before the meter reader arrives." />
+    <meta property="og:image" content="/assets/hero_bg.jpg" />
+
+    <!-- Twitter Cards -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://voltra.netlify.app" />
+    <meta property="twitter:title" content="⚡ Voltra — Smart Electricity Bill Predictor" />
+    <meta property="twitter:description" content="AI-powered electricity bill forecasting, official TG/AP slabs, and PM Surya Ghar rooftop solar calculations." />
+    <meta property="twitter:image" content="/assets/hero_bg.jpg" />
+
+    <!-- Typography Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,5 +42,16 @@
   <body class="bg-[#0B0B0B] text-[#F5F3ED] min-h-screen antialiased selection:bg-[#A3FF6B] selection:text-[#0B0B0B] font-sans">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[Voltra PWA] Service Worker active:', reg.scope))
+            .catch(err => console.log('[Voltra PWA] Service Worker registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>

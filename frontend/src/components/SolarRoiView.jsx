@@ -217,6 +217,18 @@ export default function SolarRoiView({ household, predictionResult, currencySymb
               </p>
             </div>
 
+            {/* Share CTA */}
+            <button
+              type="button"
+              onClick={() => {
+                const text = `☀️ *PM SURYA GHAR ROOFTOP SOLAR ROI*\n\n⚡ *System Size:* ${systemCapacityKw} kW\n🏛️ *Govt Subsidy:* ${currencySymbol}${subsidyAmount.toLocaleString('en-IN')}\n💰 *Net Investment:* ${currencySymbol}${netEffectiveCost.toLocaleString('en-IN')}\n📉 *Annual Power Savings:* ${currencySymbol}${Math.round(annualSavingsInr).toLocaleString('en-IN')}\n⏳ *Payback Period:* ${paybackPeriodYears} years\n🚀 *25-Year Net Profit:* ${currencySymbol}${lifetime25YrProfitInr.toLocaleString('en-IN')}\n\n👉 Calculate your rooftop solar savings at: https://voltra.netlify.app`;
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+              }}
+              className="w-full py-3 rounded-2xl bg-[#25D366]/15 border border-[#25D366]/40 text-[#25D366] hover:bg-[#25D366]/25 text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs"
+            >
+              <span>Share Solar ROI Report on WhatsApp</span>
+            </button>
+
           </div>
 
         </div>

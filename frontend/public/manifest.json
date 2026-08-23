@@ -1,0 +1,23 @@
+{
+  "short_name": "Voltra",
+  "name": "Voltra — Smart Energy & Bill Predictor",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0B0B0B",
+  "theme_color": "#A3FF6B",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["utilities", "productivity", "finance"],
+  "description": "AI-powered electricity bill predictor, TGSPDCL/AP/State tariff slabs, rooftop solar subsidies, and roommate bill splitter."
+}

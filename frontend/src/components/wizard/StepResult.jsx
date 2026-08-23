@@ -166,7 +166,18 @@ export default function StepResult({
           <span>← Re-edit Home Inputs</span>
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              const text = `⚡ *VOLTRA ELECTRICITY BILL FORECAST*\n\n📍 *Tariff Board:* ${household.tariff_zone || 'TGSPDCL Domestic'}\n📊 *Forecasted Units:* ${Math.round(predictedUnits)} kWh\n💰 *Estimated Total Bill:* ${currencySymbol}${totalBill.toFixed(2)}\n\n💡 *Top Recommendation:* Check Voltra Smart Simulator to cut your next power bill.\n👉 Calculate yours at: https://voltra.netlify.app`;
+              window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            }}
+            className="px-3.5 py-2.5 rounded-xl bg-[#25D366]/15 border border-[#25D366]/40 text-[#25D366] hover:bg-[#25D366]/25 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+          >
+            <span>Share on WhatsApp</span>
+          </button>
+
           {onViewOffers && (
             <button
               type="button"
