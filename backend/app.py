@@ -66,8 +66,7 @@ def seed_initial_demo_data():
                     message="Your last 7 days averaged 17.8 kWh/day due to heavy AC runtime. You are on track for 438 kWh (~₹3,720), exceeding your ₹3,200 budget. Reducing AC by 2 hrs/day will bring you back on budget.",
                     severity="danger",
                     projected_bill=3720.0,
-                    budget_amount=3200.0,
-                    acknowledged=False
+                    budget_amount=3200.0
                 )
                 db.add(alert)
                 db.commit()
