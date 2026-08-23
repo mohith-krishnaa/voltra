@@ -637,3 +637,112 @@ def get_demo_presets():
             }
         }
     ]
+
+
+class CopilotChatRequest(BaseModel):
+    query: str
+    household: Optional[Dict[str, Any]] = None
+    predicted_units: Optional[float] = None
+    predicted_bill: Optional[float] = None
+
+@router.post("/copilot/chat")
+def copilot_chat_handler(payload: CopilotChatRequest):
+    """
+    Voltra AI Energy Copilot - Natural language intelligence engine for electricity tariffs,
+    solar sizing, appliance optimization, and subsidy guidance.
+    """
+    q = payload.query.lower().strip()
+    zone = payload.household.get("tariff_zone", "TGSPDCL-Telangana") if payload.household else "TGSPDCL-Telangana"
+    units = payload.predicted_units or 324.3
+    bill = payload.predicted_bill or 2108.16
+
+    # 1. Telangana Gruha Jyothi & 200 units queries
+    if "gruha" in q or "200" in q or "free" in q or "zero bill" in q or "subsidy" in q:
+        if "tg" in zone.lower() or "telangana" in zone.lower():
+            return {
+                "reply": (
+                    f"💡 Under the **Telangana Gruha Jyothi Scheme**, domestic households consuming **≤ 200 units/month** receive a **100% free electricity bill (₹0.00)**!\n\n"
+                    f"📊 Your current forecast is **{units:.1f} units** (~₹{bill:.2f}). "
+                    + (f"🎉 You are already eligible for a Zero Bill!" if units <= 200 else f"⚠️ You are currently **{units - 200:.1f} units over the threshold**. Reducing your AC by 1.5 hrs/day or shifting geyser usage will bring you under 200 units to save ₹{bill:.2f}!")
+                ),
+                "action_chip": "Test in What-If Simulator",
+                "action_tab": "whatif"
+            }
+        elif "tneb" in zone.lower() or "tamil" in zone.lower():
+            return {
+                "reply": (
+                    f"💡 In **Tamil Nadu (TANGEDCO)**, every domestic household receives the **first 100 units 100% free** under the universal government subsidy! Consumption above 100 units is billed at progressive rates (₹2.25/unit up to 200 units, and ₹4.50/unit up to 400 units)."
+                ),
+                "action_chip": "View Slab Breakdown",
+                "action_tab": "predict"
+            }
+        elif "ap" in zone.lower() or "andhra" in zone.lower():
+            return {
+                "reply": (
+                    f"💡 In **Andhra Pradesh (APSPDCL/APEPDCL/APCPDCL)**, tariffs are categorized into Group A (≤75 units @ ₹1.90-₹3.00), Group B (76-225 units @ ₹3.10-₹6.80), and Group C (>225 units). SC/ST domestic consumers with white cards get up to 200 units free power."
+                ),
+                "action_chip": "Check AP Slabs",
+                "action_tab": "predict"
+            }
+        else:
+            return {
+                "reply": (
+                    f"💡 In **Karnataka (BESCOM)**, the **Gruha Jyothi Scheme** provides free electricity up to 200 units/month based on your 12-month average entitlement + 10% buffer."
+                ),
+                "action_chip": "View Karnataka Slabs",
+                "action_tab": "predict"
+            }
+
+    # 2. Solar Rooftop & PM Surya Ghar
+    if "solar" in q or "sun" in q or "rooftop" in q or "surya" in q or "panel" in q:
+        kw_needed = max(1.0, round(units / 120.0, 1))
+        subsidy = 78000 if kw_needed >= 3.0 else (60000 if kw_needed >= 2.0 else 30000)
+        return {
+            "reply": (
+                f"☀️ For your monthly consumption of **{units:.1f} kWh**, a **{kw_needed:.1f} kW Rooftop Solar System** is recommended.\n\n"
+                f"🏛️ **PM Surya Ghar Subsidy:** ₹{subsidy:,} direct bank credit.\n"
+                f"💰 **Expected Savings:** ~₹{round(units * 7.2):,} / month (~₹{round(units * 7.2 * 12):,} / year).\n"
+                f"⏳ **Payback Period:** ~3.2 to 3.8 years with 25-year panel warranty."
+            ),
+            "action_chip": "Open Solar ROI Calculator",
+            "action_tab": "solar"
+        }
+
+    # 3. AC & Cooling Energy Savings
+    if "ac" in q or "cool" in q or "temperature" in q or "air condition" in q:
+        return {
+            "reply": (
+                f"❄️ **Top AC Energy Optimization Rules:**\n"
+                f"1. **Set Temperature to 24°C - 26°C**: Each 1°C increase above 18°C reduces active compressor power consumption by **6%** (saves ~₹350 - ₹500/month per AC).\n"
+                f"2. **Use Ceiling Fan with AC**: Circulating air allows you to feel comfortable at 25°C just like 22°C.\n"
+                f"3. **Clean Filter Every 15 Days**: Clogged air filters make the compressor work 15% harder."
+            ),
+            "action_chip": "Simulate AC Upgrade",
+            "action_tab": "whatif"
+        }
+
+    # 4. EV Charging
+    if "ev" in q or "vehicle" in q or "car" in q or "bike" in q or "charge" in q:
+        return {
+            "reply": (
+                f"🚗 **Home EV Charging Economics:**\n\n"
+                f"• **2-Wheeler (Ola/Ather):** Consumes ~3 kWh for 100 km (~₹20 electricity cost vs ~₹220 in petrol).\n"
+                f"• **4-Wheeler (Tata Nexon EV):** Consumes ~14 kWh for 100 km (~₹95 electricity cost vs ~₹850 in petrol).\n\n"
+                f"☀️ *Pro-Tip:* Charge during daytime solar hours (10 AM – 4 PM) or night off-peak to save up to 20% on tariffs!"
+            ),
+            "action_chip": "Open EV Calculator",
+            "action_tab": "ev"
+        }
+
+    # 5. Default General Energy Assistant
+    return {
+        "reply": (
+            f"⚡ **Voltra AI Energy Copilot Analysis for {zone.split('-')[0]}:**\n\n"
+            f"• **Projected Consumption:** {units:.1f} kWh (~₹{bill:.2f})\n"
+            f"• **Primary Cost Drivers:** Climate appliances (ACs, geysers, refrigerators) typically account for 65%+ of your monthly invoice.\n"
+            f"• **Recommended Step:** Run a What-If simulation or check the Time-of-Day clock to shift heavy loads away from evening peak hours (6 PM - 10 PM)."
+        ),
+        "action_chip": "Explore Tips & Savings",
+        "action_tab": "savings"
+    }
+

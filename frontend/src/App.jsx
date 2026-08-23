@@ -13,6 +13,9 @@ import BillSplitterView from './components/BillSplitterView';
 import ProfileView from './components/ProfileView';
 import BillUploadView from './components/BillUploadView';
 import NearbyOfficesView from './components/NearbyOfficesView';
+import EvCalculatorView from './components/EvCalculatorView';
+import EcoRewardsView from './components/EcoRewardsView';
+import EnergyCopilot from './components/common/EnergyCopilot';
 import AuthModal from './components/AuthModal';
 import VoltraLogo from './components/common/VoltraLogo';
 
@@ -79,6 +82,21 @@ export default function App() {
       return null;
     }
   });
+
+  const [language, setLanguage] = useState(() => {
+    try {
+      return localStorage.getItem('voltra_lang') || 'en';
+    } catch {
+      return 'en';
+    }
+  });
+
+  const handleSetLanguage = (lang) => {
+    setLanguage(lang);
+    try {
+      localStorage.setItem('voltra_lang', lang);
+    } catch {}
+  };
 
   const [applianceSpecs, setApplianceSpecs] = useState([]);
 
@@ -417,6 +435,8 @@ export default function App() {
         onOpenAuth={() => setAuthModalOpen(true)}
         onSelectDemoPreset={handleApplyPreset}
         onOpenProfile={() => setActiveTab('profile')}
+        language={language}
+        setLanguage={handleSetLanguage}
       />
 
       {/* 2. Main Content Canvas */}
@@ -536,11 +556,30 @@ export default function App() {
         {/* TAB 9: Bill Upload & Past Bills */}
         {activeTab === 'bills' && (
           <BillUploadView
+            predictionResult={predictionResult}
             currencySymbol={currencySymbol}
           />
         )}
 
-        {/* TAB 10: Nearby Offices & TGSPDCL Fuse Call */}
+        {/* TAB 10: EV Charging vs Petrol Cost Optimizer */}
+        {activeTab === 'ev' && (
+          <EvCalculatorView
+            household={household}
+            predictionResult={predictionResult}
+            currencySymbol={currencySymbol}
+          />
+        )}
+
+        {/* TAB 11: Eco Rewards & Energy Quests */}
+        {activeTab === 'rewards' && (
+          <EcoRewardsView
+            household={household}
+            predictionResult={predictionResult}
+            currencySymbol={currencySymbol}
+          />
+        )}
+
+        {/* TAB 12: Nearby Offices & TGSPDCL Fuse Call */}
         {activeTab === 'offices' && (
           <NearbyOfficesView />
         )}
@@ -553,7 +592,15 @@ export default function App() {
         setActiveTab={setActiveTab}
       />
 
-      {/* 4. Footer with Voltra Logo */}
+      {/* 4. Floating AI Energy Copilot Chatbot */}
+      <EnergyCopilot
+        household={household}
+        predictionResult={predictionResult}
+        onNavigateTab={(tab) => setActiveTab(tab)}
+        currencySymbol={currencySymbol}
+      />
+
+      {/* 5. Footer with Voltra Logo */}
       <footer className="hidden md:block border-t border-white/10 bg-[#0B0B0B] py-8 text-xs text-[#8A8A84]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -569,7 +616,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* 5. Auth Modal */}
+      {/* 6. Auth Modal */}
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
