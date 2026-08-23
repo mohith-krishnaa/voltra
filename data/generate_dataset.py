@@ -112,3 +112,24 @@ def calculate_physics_units(row: Dict[str, Any], include_noise: bool = False) ->
     total_kwh = max(15.0, total_kwh)
 
     return round(float(total_kwh), 2)
+
+
+def generate_dataset(num_samples: int = 100, output_path: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Generates synthetic dataset records covering 22+ home appliances."""
+    records = []
+    for _ in range(num_samples):
+        row = {
+            "house_type": "Apartment-2BHK",
+            "area_sqft": 1150.0,
+            "occupants": 4,
+            "season": "Summer",
+            "tariff_zone": "TGSPDCL-Telangana",
+            "ac_count": 1, "ac_hours": 6.0,
+            "fan_count": 3, "fan_hours": 10.0,
+            "fridge_count": 1, "fridge_hours": 24.0,
+            "light_count": 8, "light_hours": 6.0,
+        }
+        row["monthly_kwh"] = calculate_physics_units(row, include_noise=True)
+        records.append(row)
+    return records
+

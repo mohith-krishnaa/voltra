@@ -1,10 +1,10 @@
-﻿{
-  "last_updated": "22-Aug-2026",
-  "disclaimer": "Customer care lines, emergency breakdown helplines, and section office addresses are sourced from published state discom circulars. Please verify with local electricity board notices before official correspondence.",
+{
+  "last_updated": "23-Aug-2026",
+  "disclaimer": "Customer care lines, emergency breakdown helplines, and section office addresses are sourced from published state electricity regulatory commission circulars.",
   "toll_free_national": {
-    "title": "National Power Helpline (All India)",
+    "title": "National Power Emergency Helpline (All India)",
     "number": "1912",
-    "description": "24x7 Emergency power breakdown, transformer failure, and billing grievance toll-free helpline across Indian discoms."
+    "description": "24x7 Emergency power breakdown, transformer failure, and billing grievance toll-free helpline across all Indian state discoms."
   },
   "discoms": [
     {
@@ -17,9 +17,70 @@
       "official_portal": "https://www.tgspdcl.com",
       "key_circles": [
         { "circle": "Hyderabad Central (Mint Compound)", "phone": "040-23454884", "address": "Mint Compound, Hyderabad" },
-        { "circle": "Hyderabad South (Charminar)", "phone": "040-24528822", "address": "Charminar Circle Office, Hyderabad" },
         { "circle": "Cyber City (Madhapur / Hitec City)", "phone": "040-23118944", "address": "Madhapur Main Rd, Hyderabad" },
-        { "circle": "Ranga Reddy North (Secunderabad)", "phone": "040-27804422", "address": "Secunderabad Division Office" }
+        { "circle": "Kukatpally / KPHB Colony", "phone": "040-23454884", "address": "KPHB 6th Phase, JNTU Rd, Hyderabad" },
+        { "circle": "Ranga Reddy North (Secunderabad)", "phone": "040-27804422", "address": "Secunderabad Division Office" },
+        { "circle": "Hyderabad South (Charminar)", "phone": "040-24528822", "address": "Charminar Circle Office, Hyderabad" }
+      ]
+    },
+    {
+      "code": "TGNPDCL",
+      "name": "Telangana Northern Power Distribution Company Ltd",
+      "state": "Telangana",
+      "headquarters": "Chaitanyapuri, Warangal - 506004",
+      "helpline_24x7": "1912 / 1800-425-0028",
+      "whatsapp_bot": "+91 94408 11234",
+      "official_portal": "https://www.tgnpdcl.com",
+      "key_circles": [
+        { "circle": "Warangal Urban Circle", "phone": "0870-2461501", "address": "Nakkalagutta, Hanamkonda, Warangal" },
+        { "circle": "Karimnagar Circle", "phone": "0878-2244222", "address": "Collectorate Road, Karimnagar" },
+        { "circle": "Nizamabad Circle", "phone": "08462-220111", "address": "Khaleelwadi, Nizamabad" },
+        { "circle": "Khammam Circle", "phone": "08742-223456", "address": "Wyra Road, Khammam" }
+      ]
+    },
+    {
+      "code": "APSPDCL",
+      "name": "Andhra Pradesh Southern Power Distribution Company Ltd",
+      "state": "Andhra Pradesh",
+      "headquarters": "D.No:19-13-65/A, Raghavendra Nagar, Tirupati - 517501",
+      "helpline_24x7": "1912 / 1800-425-155333",
+      "whatsapp_bot": "+91 94408 15533",
+      "official_portal": "https://www.apspdcl.in",
+      "key_circles": [
+        { "circle": "Tirupati Circle Head Office", "phone": "0877-2284100", "address": "Kesavayana Gunta, Tirupati" },
+        { "circle": "Nellore Circle Office", "phone": "0861-2327500", "address": "Vidyut Bhavan, Dargamitta, Nellore" },
+        { "circle": "Kurnool Circle Office", "phone": "08518-220555", "address": "Alur Road, Kurnool" },
+        { "circle": "Anantapur Circle Office", "phone": "08554-274000", "address": "Sai Nagar, Anantapur" },
+        { "circle": "Kadapa (YSR) Circle", "phone": "08562-244100", "address": "RTI Road, Kadapa" }
+      ]
+    },
+    {
+      "code": "APEPDCL",
+      "name": "Andhra Pradesh Eastern Power Distribution Company Ltd",
+      "state": "Andhra Pradesh",
+      "headquarters": "P&T Colony, Seethammadhara, Visakhapatnam - 530013",
+      "helpline_24x7": "1912 / 1800-425-55333",
+      "whatsapp_bot": "+91 94906 13000",
+      "official_portal": "https://www.apeasternpower.com",
+      "key_circles": [
+        { "circle": "Visakhapatnam Corporate Office", "phone": "0891-2582300", "address": "Seethammadhara, Visakhapatnam" },
+        { "circle": "Rajahmundry Circle Office", "phone": "0883-2475000", "address": "Danavaipeta, Rajahmundry" },
+        { "circle": "Kakinada Operation Circle", "phone": "0884-2374000", "address": "Main Road, Kakinada" },
+        { "circle": "Vizianagaram Circle", "phone": "08922-276000", "address": "Cantonment, Vizianagaram" }
+      ]
+    },
+    {
+      "code": "APCPDCL",
+      "name": "Andhra Pradesh Central Power Distribution Corporation Ltd",
+      "state": "Andhra Pradesh",
+      "headquarters": "Besant Road, Governorpet, Vijayawada - 520002",
+      "helpline_24x7": "1912 / 1800-425-77333",
+      "whatsapp_bot": "+91 94906 18888",
+      "official_portal": "https://www.apcpdcl.in",
+      "key_circles": [
+        { "circle": "Vijayawada Operation Circle", "phone": "0866-2423333", "address": "Governorpet, Vijayawada" },
+        { "circle": "Guntur Operation Circle", "phone": "0863-2234444", "address": "Arundelpet, Guntur" },
+        { "circle": "Ongole Operation Circle", "phone": "08592-232111", "address": "Kurnool Road, Ongole" }
       ]
     },
     {
@@ -33,12 +94,13 @@
       "key_circles": [
         { "circle": "Bengaluru East (Indiranagar)", "phone": "080-22975800", "address": "Indiranagar 100ft Road, Bengaluru" },
         { "circle": "Bengaluru South (Jayanagar)", "phone": "080-22975400", "address": "9th Block Jayanagar, Bengaluru" },
-        { "circle": "Bengaluru North (Malleshwaram)", "phone": "080-22975200", "address": "8th Main Malleshwaram, Bengaluru" }
+        { "circle": "Bengaluru North (Malleshwaram)", "phone": "080-22975200", "address": "8th Main Malleshwaram, Bengaluru" },
+        { "circle": "Kolar & Tumakuru Circles", "phone": "08152-222400", "address": "Vidyut Bhavan, Kolar" }
       ]
     },
     {
-      "code": "TNEB",
-      "name": "Tamil Nadu Generation and Distribution Corp (TANGEDCO)",
+      "code": "TANGEDCO",
+      "name": "Tamil Nadu Generation and Distribution Corp (TNEB)",
       "state": "Tamil Nadu",
       "headquarters": "NPKRR Maaligai, 144 Anna Salai, Chennai - 600002",
       "helpline_24x7": "94987 94987 / 1912",
@@ -47,7 +109,8 @@
       "key_circles": [
         { "circle": "Chennai South (T. Nagar)", "phone": "044-28154545", "address": "T. Nagar Substation Complex, Chennai" },
         { "circle": "Chennai North (Anna Nagar)", "phone": "044-26214545", "address": "Anna Nagar West, Chennai" },
-        { "circle": "Coimbatore Metro", "phone": "0422-2495555", "address": "Tatabad, Coimbatore" }
+        { "circle": "Coimbatore Metro", "phone": "0422-2495555", "address": "Tatabad, Coimbatore" },
+        { "circle": "Madurai Metro Circle", "phone": "0452-2531000", "address": "K.Pudur, Madurai" }
       ]
     },
     {
@@ -60,7 +123,66 @@
       "official_portal": "https://www.mahadiscom.in",
       "key_circles": [
         { "circle": "Mumbai Urban (Bandra)", "phone": "022-26474211", "address": "Prakashgad, Bandra East, Mumbai" },
-        { "circle": "Pune Urban (Rasta Peth)", "phone": "020-26051122", "address": "Rasta Peth Division, Pune" }
+        { "circle": "Pune Urban (Rasta Peth)", "phone": "020-26051122", "address": "Rasta Peth Division, Pune" },
+        { "circle": "Nagpur Urban Circle", "phone": "0712-2533000", "address": "Katol Road, Nagpur" },
+        { "circle": "Nashik Urban Circle", "phone": "0253-2591000", "address": "Vidyut Bhavan, Nashik" }
+      ]
+    },
+    {
+      "code": "BSES",
+      "name": "BSES Rajdhani & BSES Yamuna Power Ltd",
+      "state": "Delhi",
+      "headquarters": "BSES Bhawan, Nehru Place, New Delhi - 110019",
+      "helpline_24x7": "19123 (BRPL) / 19122 (BYPL)",
+      "whatsapp_bot": "+91 95556 19123",
+      "official_portal": "https://www.bsesdelhi.com",
+      "key_circles": [
+        { "circle": "South Delhi (Nehru Place)", "phone": "011-39999707", "address": "BSES Bhawan, Nehru Place, New Delhi" },
+        { "circle": "West Delhi (Tagore Garden)", "phone": "011-39999808", "address": "Major Bhupinder Singh Nagar, Delhi" },
+        { "circle": "East Delhi (Karkardooma)", "phone": "011-39999909", "address": "CBD Ground, Karkardooma, Delhi" }
+      ]
+    },
+    {
+      "code": "UPPCL",
+      "name": "Uttar Pradesh Power Corporation Ltd (PVVNL/MVVNL/DVVNL)",
+      "state": "Uttar Pradesh",
+      "headquarters": "Shakti Bhawan, 14 Ashok Marg, Lucknow - 226001",
+      "helpline_24x7": "1912",
+      "whatsapp_bot": "+91 87565 01912",
+      "official_portal": "https://www.upenergy.in",
+      "key_circles": [
+        { "circle": "Noida & Greater Noida (PVVNL)", "phone": "0120-2444555", "address": "Sector 16, Noida" },
+        { "circle": "Lucknow Urban (MVVNL)", "phone": "0522-2287701", "address": "4A Gokhale Marg, Lucknow" },
+        { "circle": "Agra Urban (DVVNL)", "phone": "0562-2603738", "address": "Urja Bhawan, Agra" }
+      ]
+    },
+    {
+      "code": "GUVCL",
+      "name": "Gujarat Urja Vikas Nigam Ltd (DGVCL/MGVCL/PGVCL/UGVCL)",
+      "state": "Gujarat",
+      "headquarters": "Sardar Patel Vidyut Bhavan, Race Course, Vadodara - 390007",
+      "helpline_24x7": "19122 / 1800-233-155333",
+      "whatsapp_bot": "+91 99252 19122",
+      "official_portal": "https://www.guvnl.com",
+      "key_circles": [
+        { "circle": "Ahmedabad / Gandhinagar (UGVCL)", "phone": "079-23240000", "address": "Visnagar Road, Mehsana" },
+        { "circle": "Surat / South Gujarat (DGVCL)", "phone": "0261-2506000", "address": "Nana Varachha Road, Surat" },
+        { "circle": "Vadodara / Central Gujarat (MGVCL)", "phone": "0265-2310500", "address": "Ajwa Road, Vadodara" },
+        { "circle": "Rajkot / Saurashtra (PGVCL)", "phone": "0281-2380425", "address": "Nana Mava Road, Rajkot" }
+      ]
+    },
+    {
+      "code": "KSEB",
+      "name": "Kerala State Electricity Board Ltd",
+      "state": "Kerala",
+      "headquarters": "Vydyuthi Bhavanam, Pattom, Thiruvananthapuram - 695004",
+      "helpline_24x7": "1912 / 94960 18333",
+      "whatsapp_bot": "+91 94960 18333",
+      "official_portal": "https://www.kseb.in",
+      "key_circles": [
+        { "circle": "Thiruvananthapuram Urban", "phone": "0471-2448850", "address": "Pattom, Thiruvananthapuram" },
+        { "circle": "Kochi / Ernakulam Electrical Circle", "phone": "0484-2391234", "address": "Power House Road, Ernakulam" },
+        { "circle": "Kozhikode Electrical Circle", "phone": "0495-2766000", "address": "Vydyuthi Bhavanam, Kozhikode" }
       ]
     }
   ]

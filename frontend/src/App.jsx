@@ -191,54 +191,164 @@ export default function App() {
       });
 
       const totalUnits = Math.round(units * 10) / 10;
+      const zone = currentHousehold.tariff_zone || "TGSPDCL-Telangana";
       
-      // Calculate TGSPDCL progressive slab bill
       let energyCharge = 0;
+      let fixedCharge = 50.0;
+      let dutyAmount = Math.round(totalUnits * 0.06 * 100) / 100;
       const slabBreakdown = [];
-      if (totalUnits <= 100) {
-        const s1 = Math.min(50, totalUnits);
-        const s2 = Math.max(0, totalUnits - 50);
-        energyCharge += s1 * 1.95 + s2 * 3.10;
-        slabBreakdown.push({ slab_name: '0-50 units', units_in_slab: s1, rate_per_unit: 1.95, slab_total: s1 * 1.95 });
-        if (s2 > 0) slabBreakdown.push({ slab_name: '51-100 units', units_in_slab: s2, rate_per_unit: 3.10, slab_total: s2 * 3.10 });
-      } else if (totalUnits <= 200) {
+      let isZeroBill = false;
+      let subsidyName = null;
+
+      // 1. ANDHRA PRADESH (APSPDCL / APEPDCL / APCPDCL)
+      if (zone.includes("APSPDCL") || zone.includes("APEPDCL") || zone.includes("APCPDCL") || zone.includes("-AP")) {
+        if (totalUnits <= 75) {
+          fixedCharge = 25.0;
+          const s1 = Math.min(30, totalUnits);
+          const s2 = Math.max(0, totalUnits - 30);
+          energyCharge = s1 * 1.90 + s2 * 3.00;
+          slabBreakdown.push({ slab_name: '0-30 units (Lifeline)', units_in_slab: s1, rate_per_unit: 1.90, slab_total: s1 * 1.90 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '31-75 units (Group A)', units_in_slab: s2, rate_per_unit: 3.00, slab_total: s2 * 3.00 });
+        } else if (totalUnits <= 225) {
+          fixedCharge = 50.0;
+          const s1 = Math.min(50, totalUnits);
+          const s2 = Math.min(50, Math.max(0, totalUnits - 50));
+          const s3 = Math.min(100, Math.max(0, totalUnits - 100));
+          const s4 = Math.max(0, totalUnits - 200);
+          energyCharge = s1 * 3.10 + s2 * 3.80 + s3 * 4.80 + s4 * 6.80;
+          slabBreakdown.push({ slab_name: '0-50 units', units_in_slab: s1, rate_per_unit: 3.10, slab_total: s1 * 3.10 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '51-100 units', units_in_slab: s2, rate_per_unit: 3.80, slab_total: s2 * 3.80 });
+          if (s3 > 0) slabBreakdown.push({ slab_name: '101-200 units', units_in_slab: s3, rate_per_unit: 4.80, slab_total: s3 * 4.80 });
+          if (s4 > 0) slabBreakdown.push({ slab_name: '201-225 units', units_in_slab: s4, rate_per_unit: 6.80, slab_total: s4 * 6.80 });
+        } else {
+          fixedCharge = 75.0;
+          const s1 = Math.min(50, totalUnits);
+          const s2 = Math.min(50, Math.max(0, totalUnits - 50));
+          const s3 = Math.min(100, Math.max(0, totalUnits - 100));
+          const s4 = Math.min(100, Math.max(0, totalUnits - 200));
+          const s5 = Math.max(0, totalUnits - 300);
+          energyCharge = s1 * 3.80 + s2 * 4.80 + s3 * 6.80 + s4 * 7.90 + s5 * 8.90;
+          slabBreakdown.push({ slab_name: '0-50 units', units_in_slab: s1, rate_per_unit: 3.80, slab_total: s1 * 3.80 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '51-100 units', units_in_slab: s2, rate_per_unit: 4.80, slab_total: s2 * 4.80 });
+          if (s3 > 0) slabBreakdown.push({ slab_name: '101-200 units', units_in_slab: s3, rate_per_unit: 6.80, slab_total: s3 * 6.80 });
+          if (s4 > 0) slabBreakdown.push({ slab_name: '201-300 units', units_in_slab: s4, rate_per_unit: 7.90, slab_total: s4 * 7.90 });
+          if (s5 > 0) slabBreakdown.push({ slab_name: '300+ units', units_in_slab: s5, rate_per_unit: 8.90, slab_total: s5 * 8.90 });
+        }
+      }
+      // 2. TAMIL NADU (TANGEDCO / TNEB - 100 Units Free)
+      else if (zone.includes("TANGEDCO") || zone.includes("TNEB") || zone.includes("TamilNadu")) {
+        const s1 = Math.min(100, totalUnits);
+        const s2 = Math.min(100, Math.max(0, totalUnits - 100));
+        const s3 = Math.min(200, Math.max(0, totalUnits - 200));
+        const s4 = Math.max(0, totalUnits - 400);
+        energyCharge = s1 * 0.00 + s2 * 2.25 + s3 * 4.50 + s4 * 6.00;
+        fixedCharge = totalUnits <= 100 ? 0.0 : 50.0;
+        dutyAmount = Math.round((energyCharge + fixedCharge) * 0.05 * 100) / 100;
+        slabBreakdown.push({ slab_name: '0-100 units (Free Govt Subsidy)', units_in_slab: s1, rate_per_unit: 0.00, slab_total: 0.0 });
+        if (s2 > 0) slabBreakdown.push({ slab_name: '101-200 units', units_in_slab: s2, rate_per_unit: 2.25, slab_total: s2 * 2.25 });
+        if (s3 > 0) slabBreakdown.push({ slab_name: '201-400 units', units_in_slab: s3, rate_per_unit: 4.50, slab_total: s3 * 4.50 });
+        if (s4 > 0) slabBreakdown.push({ slab_name: '400+ units', units_in_slab: s4, rate_per_unit: 6.00, slab_total: s4 * 6.00 });
+        subsidyName = "Tamil Nadu 100 Units Free Universal Subsidy";
+      }
+      // 3. KARNATAKA (BESCOM)
+      else if (zone.includes("BESCOM") || zone.includes("Karnataka")) {
         const s1 = Math.min(100, totalUnits);
         const s2 = Math.max(0, totalUnits - 100);
-        energyCharge += s1 * 3.40 + s2 * 4.80;
-        slabBreakdown.push({ slab_name: '0-100 units', units_in_slab: s1, rate_per_unit: 3.40, slab_total: s1 * 3.40 });
-        if (s2 > 0) slabBreakdown.push({ slab_name: '101-200 units', units_in_slab: s2, rate_per_unit: 4.80, slab_total: s2 * 4.80 });
-      } else {
+        energyCharge = s1 * 4.75 + s2 * 7.00;
+        fixedCharge = 110.0;
+        dutyAmount = Math.round((energyCharge + fixedCharge) * 0.09 * 100) / 100;
+        slabBreakdown.push({ slab_name: '0-100 units', units_in_slab: s1, rate_per_unit: 4.75, slab_total: s1 * 4.75 });
+        if (s2 > 0) slabBreakdown.push({ slab_name: '>100 units', units_in_slab: s2, rate_per_unit: 7.00, slab_total: s2 * 7.00 });
+        if (currentHousehold.enable_gruha_jyothi && totalUnits <= 200) {
+          isZeroBill = true;
+          subsidyName = "Karnataka Gruha Jyothi (Zero Bill ≤ 200 units)";
+        }
+      }
+      // 4. DELHI (BSES - 200 Free Units)
+      else if (zone.includes("BSES") || zone.includes("Delhi")) {
         const s1 = Math.min(200, totalUnits);
-        const s2 = Math.min(100, Math.max(0, totalUnits - 200));
-        const s3 = Math.max(0, totalUnits - 300);
-        energyCharge += s1 * 5.10 + s2 * 7.70 + s3 * 9.00;
-        slabBreakdown.push({ slab_name: '0-200 units', units_in_slab: s1, rate_per_unit: 5.10, slab_total: s1 * 5.10 });
-        if (s2 > 0) slabBreakdown.push({ slab_name: '201-300 units', units_in_slab: s2, rate_per_unit: 7.70, slab_total: s2 * 7.70 });
-        if (s3 > 0) slabBreakdown.push({ slab_name: '300+ units', units_in_slab: s3, rate_per_unit: 9.00, slab_total: s3 * 9.00 });
+        const s2 = Math.min(200, Math.max(0, totalUnits - 200));
+        const s3 = Math.max(0, totalUnits - 400);
+        energyCharge = s1 * 3.00 + s2 * 4.50 + s3 * 6.50;
+        fixedCharge = 60.0;
+        dutyAmount = Math.round((energyCharge + fixedCharge) * 0.05 * 100) / 100;
+        slabBreakdown.push({ slab_name: '0-200 units', units_in_slab: s1, rate_per_unit: 3.00, slab_total: s1 * 3.00 });
+        if (s2 > 0) slabBreakdown.push({ slab_name: '201-400 units', units_in_slab: s2, rate_per_unit: 4.50, slab_total: s2 * 4.50 });
+        if (s3 > 0) slabBreakdown.push({ slab_name: '>400 units', units_in_slab: s3, rate_per_unit: 6.50, slab_total: s3 * 6.50 });
+        if (totalUnits <= 200) {
+          isZeroBill = true;
+          subsidyName = "Delhi 200 Units 100% Free Power Subsidy";
+        }
+      }
+      // 5. MAHARASHTRA (MSEDCL)
+      else if (zone.includes("MSEDCL") || zone.includes("Maharashtra")) {
+        const s1 = Math.min(100, totalUnits);
+        const s2 = Math.min(200, Math.max(0, totalUnits - 100));
+        const s3 = Math.min(200, Math.max(0, totalUnits - 300));
+        const s4 = Math.max(0, totalUnits - 500);
+        energyCharge = s1 * 5.88 + s2 * 11.26 + s3 * 15.72 + s4 * 17.81;
+        fixedCharge = 128.0;
+        dutyAmount = Math.round((energyCharge + fixedCharge) * 0.16 * 100) / 100;
+        slabBreakdown.push({ slab_name: '0-100 units', units_in_slab: s1, rate_per_unit: 5.88, slab_total: s1 * 5.88 });
+        if (s2 > 0) slabBreakdown.push({ slab_name: '101-300 units', units_in_slab: s2, rate_per_unit: 11.26, slab_total: s2 * 11.26 });
+        if (s3 > 0) slabBreakdown.push({ slab_name: '301-500 units', units_in_slab: s3, rate_per_unit: 15.72, slab_total: s3 * 15.72 });
+        if (s4 > 0) slabBreakdown.push({ slab_name: '>500 units', units_in_slab: s4, rate_per_unit: 17.81, slab_total: s4 * 17.81 });
+      }
+      // 6. DEFAULT / TELANGANA (TGSPDCL & TGNPDCL - TSERC LT-1)
+      else {
+        if (totalUnits <= 100) {
+          fixedCharge = 25.0;
+          const s1 = Math.min(50, totalUnits);
+          const s2 = Math.max(0, totalUnits - 50);
+          energyCharge = s1 * 1.95 + s2 * 3.10;
+          slabBreakdown.push({ slab_name: '0-50 units (Category A)', units_in_slab: s1, rate_per_unit: 1.95, slab_total: s1 * 1.95 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '51-100 units (Category A)', units_in_slab: s2, rate_per_unit: 3.10, slab_total: s2 * 3.10 });
+        } else if (totalUnits <= 200) {
+          fixedCharge = 50.0;
+          const s1 = Math.min(100, totalUnits);
+          const s2 = Math.max(0, totalUnits - 100);
+          energyCharge = s1 * 3.40 + s2 * 4.80;
+          slabBreakdown.push({ slab_name: '0-100 units (Category B-i)', units_in_slab: s1, rate_per_unit: 3.40, slab_total: s1 * 3.40 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '101-200 units (Category B-i)', units_in_slab: s2, rate_per_unit: 4.80, slab_total: s2 * 4.80 });
+        } else {
+          fixedCharge = 80.0;
+          const s1 = Math.min(200, totalUnits);
+          const s2 = Math.min(100, Math.max(0, totalUnits - 200));
+          const s3 = Math.max(0, totalUnits - 300);
+          energyCharge = s1 * 5.10 + s2 * 7.70 + s3 * 9.00;
+          slabBreakdown.push({ slab_name: '0-200 units (Category B-ii)', units_in_slab: s1, rate_per_unit: 5.10, slab_total: s1 * 5.10 });
+          if (s2 > 0) slabBreakdown.push({ slab_name: '201-300 units', units_in_slab: s2, rate_per_unit: 7.70, slab_total: s2 * 7.70 });
+          if (s3 > 0) slabBreakdown.push({ slab_name: '300+ units', units_in_slab: s3, rate_per_unit: 9.00, slab_total: s3 * 9.00 });
+        }
+
+        if (currentHousehold.enable_gruha_jyothi && totalUnits <= 200) {
+          isZeroBill = true;
+          subsidyName = "Telangana Gruha Jyothi (100% Free Bill ≤ 200 units)";
+        }
       }
 
-      const fixedCharge = totalUnits > 200 ? 80.0 : totalUnits > 100 ? 50.0 : 25.0;
-      const dutyAmount = Math.round(totalUnits * 0.06 * 100) / 100;
-      const isZeroBill = currentHousehold.enable_gruha_jyothi && totalUnits <= 200;
-      const totalBill = isZeroBill ? 0.0 : Math.round((energyCharge + fixedCharge + dutyAmount) * 100) / 100;
+      const rawSubtotal = energyCharge + fixedCharge + dutyAmount;
+      const totalBill = isZeroBill ? 0.0 : Math.round(rawSubtotal * 100) / 100;
 
       const fallbackResult = {
         predicted_units: totalUnits,
         confidence_score: 0.94,
+        tariff_zone: zone,
         bill: {
           total_bill: totalBill,
-          energy_charge: energyCharge,
+          energy_charge: Math.round(energyCharge * 100) / 100,
           fixed_charge: fixedCharge,
           duty_amount: dutyAmount,
           currency_symbol: "₹",
           is_zero_bill: isZeroBill,
+          subsidy_name: subsidyName,
           slab_breakdown: slabBreakdown
         },
         appliance_breakdown: breakdown,
         actionable_tips: [
           { title: 'Increase AC Set Temperature to 24°C', savings_inr: 420, category: 'Cooling', difficulty: 'Easy', desc: 'Each 1°C increase above 18°C reduces AC power draw by 6%.' },
           { title: 'Upgrade 3 Ceiling Fans to 28W BLDC', savings_inr: 310, category: 'Efficiency', difficulty: 'Medium', desc: 'BLDC motor fans consume only 28W compared to traditional 75W fans.' },
-          { title: 'Shift Washing Machine Load to 11 AM - 3 PM', savings_inr: 180, category: 'Time-of-Day', difficulty: 'Easy', desc: 'Benefit from daytime solar off-peak tariff rebates and avoid evening surcharges.' }
+          { title: 'Shift Heavy Washing & Geyser to Solar Hours', savings_inr: 180, category: 'Time-of-Day', difficulty: 'Easy', desc: 'Benefit from daytime solar off-peak tariff rebates and avoid evening surcharges.' }
         ]
       };
 

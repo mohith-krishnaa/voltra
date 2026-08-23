@@ -99,10 +99,55 @@ export default function ProfileView({ user, onLogout, household, setHousehold })
         {/* Card 2: Electricity Connection Details */}
         <div className='p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6'>
           <span className='text-xs font-mono uppercase tracking-widest text-slate-500 font-bold block'>
-            02 / DISCOM SERVICE CONNECTION (USC)
+            02 / DISCOM SERVICE CONNECTION (USC) & TARIFF
           </span>
 
-          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs'>
+            <div>
+              <label className='block text-slate-500 mb-1 font-mono uppercase'>State Electricity Board / DISCOM</label>
+              <select
+                value={household?.tariff_zone || 'TGSPDCL-Telangana'}
+                onChange={(e) => setHousehold({ ...household, tariff_zone: e.target.value })}
+                className='w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#E15B2D]'
+              >
+                <optgroup label="TELANGANA (TSERC)">
+                  <option value="TGSPDCL-Telangana">TGSPDCL (Telangana Southern - Hyderabad, Ranga Reddy)</option>
+                  <option value="TGNPDCL-Telangana">TGNPDCL (Telangana Northern - Warangal, Karimnagar)</option>
+                </optgroup>
+                <optgroup label="ANDHRA PRADESH (APERC)">
+                  <option value="APSPDCL-AP">APSPDCL (AP Southern - Tirupati, Nellore, Rayalaseema)</option>
+                  <option value="APEPDCL-AP">APEPDCL (AP Eastern - Vizag, Srikakulam, Godavari)</option>
+                  <option value="APCPDCL-AP">APCPDCL (AP Central - Vijayawada, Guntur)</option>
+                </optgroup>
+                <optgroup label="OTHER STATE BOARDS">
+                  <option value="BESCOM-Karnataka">BESCOM (Bangalore / Karnataka)</option>
+                  <option value="TANGEDCO-TamilNadu">TANGEDCO / TNEB (Tamil Nadu 100 Free Units)</option>
+                  <option value="MSEDCL-Maharashtra">MSEDCL (Maharashtra Mahavitaran)</option>
+                  <option value="BSES-Delhi">BSES (Delhi NCT 200 Free Units)</option>
+                  <option value="UPPCL-UP">UPPCL (Uttar Pradesh Urban)</option>
+                  <option value="GUVCL-Gujarat">GUVCL (Gujarat Discoms)</option>
+                  <option value="KSEB-Kerala">KSEB (Kerala State Electricity)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div>
+              <label className='block text-slate-500 mb-1 font-mono uppercase'>Government Free Scheme Link</label>
+              <label className='flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 cursor-pointer'>
+                <input
+                  type='checkbox'
+                  checked={household?.enable_gruha_jyothi ?? true}
+                  onChange={(e) => setHousehold({ ...household, enable_gruha_jyothi: e.target.checked })}
+                  className='w-4 h-4 accent-[#E15B2D] rounded'
+                />
+                <span className='text-xs font-medium text-slate-800 dark:text-slate-200'>
+                  Apply Zero-Bill Subsidies (Gruha Jyothi / Free Units)
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono pt-2'>
             <div>
               <label className='block text-slate-500 mb-1 uppercase'>USC / Service No.</label>
               <input

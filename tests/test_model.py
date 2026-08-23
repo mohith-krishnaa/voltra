@@ -4,7 +4,6 @@ Tests for ML Dataset Generator, Model Pipeline & Adaptive Forecaster
 
 import os
 import pytest
-import pandas as pd
 from data.generate_dataset import generate_dataset, calculate_physics_units
 from model.train_daily_model import project_remaining_month
 

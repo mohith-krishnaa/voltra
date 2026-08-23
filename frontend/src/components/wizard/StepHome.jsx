@@ -163,12 +163,44 @@ export default function StepHome({ household, setHousehold, tariffs = [], onNext
           onChange={(e) => setHousehold({ ...household, tariff_zone: e.target.value })}
           className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#E15B2D] focus:bg-white"
         >
-          <option value="TGSPDCL-Telangana">TGSPDCL (Telangana Southern Power - Domestic LT-1)</option>
-          <option value="TSSPDCL-Telangana">TSSPDCL (Telangana Domestic Slab Rate)</option>
-          <option value="BESCOM-Bangalore">BESCOM (Karnataka Bangalore Electricity Supply)</option>
-          <option value="TNEB-TamilNadu">TANGEDCO / TNEB (Tamil Nadu Domestic with 100 Free Units)</option>
-          <option value="MSEDCL-Maharashtra">MSEDCL (Maharashtra State Electricity)</option>
-          <option value="BSES-Delhi">BSES Rajdhani (Delhi Domestic with 200 Free Units)</option>
+          <optgroup label="⚡ TELANGANA (TSERC LT-1 Domestic)">
+            <option value="TGSPDCL-Telangana">TGSPDCL (Telangana Southern - Hyderabad, Ranga Reddy, Medchal, Nalgonda)</option>
+            <option value="TGNPDCL-Telangana">TGNPDCL (Telangana Northern - Warangal, Karimnagar, Khammam, Nizamabad)</option>
+          </optgroup>
+
+          <optgroup label="⚡ ANDHRA PRADESH (APERC Domestic Slabs)">
+            <option value="APSPDCL-AP">APSPDCL (Andhra Pradesh Southern - Tirupati, Nellore, Chittoor, Kadapa, Anantapur, Kurnool)</option>
+            <option value="APEPDCL-AP">APEPDCL (Andhra Pradesh Eastern - Visakhapatnam, Srikakulam, East/West Godavari)</option>
+            <option value="APCPDCL-AP">APCPDCL (Andhra Pradesh Central - Vijayawada, Guntur, Krishna, Prakasam)</option>
+          </optgroup>
+
+          <optgroup label="⚡ KARNATAKA (KERC LT-2a Domestic)">
+            <option value="BESCOM-Karnataka">BESCOM (Bangalore Electricity Supply - Bengaluru, Kolar, Tumakuru)</option>
+          </optgroup>
+
+          <optgroup label="⚡ TAMIL NADU (TNERC Domestic)">
+            <option value="TANGEDCO-TamilNadu">TANGEDCO / TNEB (Tamil Nadu - 100 Units Free Universal Subsidy)</option>
+          </optgroup>
+
+          <optgroup label="⚡ MAHARASHTRA (MERC Domestic)">
+            <option value="MSEDCL-Maharashtra">MSEDCL (Maharashtra Mahavitaran - Mumbai Suburbs, Pune, Nagpur, Nashik)</option>
+          </optgroup>
+
+          <optgroup label="⚡ DELHI NCT (DERC Domestic)">
+            <option value="BSES-Delhi">BSES Rajdhani / Yamuna (Delhi NCT - 200 Units 100% Free Subsidy)</option>
+          </optgroup>
+
+          <optgroup label="⚡ UTTAR PRADESH (UPERC LMV-1)">
+            <option value="UPPCL-UP">UPPCL (Uttar Pradesh - PVVNL Noida/Ghaziabad, MVVNL Lucknow, DVVNL, PuVVNL)</option>
+          </optgroup>
+
+          <optgroup label="⚡ GUJARAT (GERC RGP Domestic)">
+            <option value="GUVCL-Gujarat">GUVCL (Gujarat - DGVCL Surat, MGVCL Vadodara, PGVCL Rajkot, UGVCL Ahmedabad)</option>
+          </optgroup>
+
+          <optgroup label="⚡ KERALA (KSERC LT-1A)">
+            <option value="KSEB-Kerala">KSEB (Kerala State Electricity Board - Thiruvananthapuram, Kochi, Kozhikode)</option>
+          </optgroup>
         </select>
       </div>
 
