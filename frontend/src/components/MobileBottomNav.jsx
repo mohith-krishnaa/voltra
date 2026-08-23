@@ -10,6 +10,7 @@ import {
   Lightbulb,
   Sliders,
   Users,
+  Award,
   MoreHorizontal
 } from 'lucide-react';
 
@@ -21,6 +22,8 @@ const PRIMARY_TABS = [
 ];
 
 const MORE_TABS = [
+  { id: 'ev', label: 'EV', icon: Zap },
+  { id: 'rewards', label: 'Badges', icon: Award },
   { id: 'usage', label: 'Usage', icon: BarChart3 },
   { id: 'whatif', label: 'What-If', icon: Sliders },
   { id: 'split', label: 'Split', icon: Users },

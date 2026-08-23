@@ -204,6 +204,14 @@ export default function HomeView({
             </button>
 
             <button
+              onClick={() => window.dispatchEvent(new Event('open-energy-copilot'))}
+              className="px-4 py-2.5 rounded-xl bg-[#A3FF6B]/15 border border-[#A3FF6B]/40 text-[#A3FF6B] hover:bg-[#A3FF6B]/25 text-sm font-bold flex items-center gap-2 transition cursor-pointer shadow-xs"
+            >
+              <Sparkles className="w-4 h-4 text-[#A3FF6B]" />
+              <span>Ask AI & Voice</span>
+            </button>
+
+            <button
               onClick={onViewSolar}
               className="btn-outline-card text-sm font-semibold flex items-center gap-2 cursor-pointer"
             >

@@ -10,7 +10,11 @@ import {
   Sliders, 
   ArrowRight,
   RefreshCw,
-  HelpCircle
+  HelpCircle,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -30,15 +34,18 @@ export default function EnergyCopilot({
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
   const [chatHistory, setChatHistory] = useState([
     {
       sender: 'bot',
-      text: `👋 Hi! I am your **Voltra AI Energy Copilot**.\n\nI can analyze your household's progressive electricity slabs, recommend solar rooftop sizing, or suggest how to reduce your power bills. Ask me anything!`,
+      text: `👋 Hi! I am your **Voltra AI Energy & Voice Copilot**.\n\nYou can **type or speak** with me using the microphone button! Ask me about state utility slabs, rooftop solar sizing, or how to reduce your power bills.`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
 
   const chatEndRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -49,6 +56,84 @@ export default function EnergyCopilot({
       scrollToBottom();
     }
   }, [chatHistory, isOpen]);
+
+  // Global listener so any button in navbar/hero can open the Copilot
+  useEffect(() => {
+    const handleOpenEvent = () => setIsOpen(true);
+    window.addEventListener('open-energy-copilot', handleOpenEvent);
+    return () => window.removeEventListener('open-energy-copilot', handleOpenEvent);
+  }, []);
+
+  // Text to speech helper
+  const speakText = (rawText) => {
+    if (!voiceOutputEnabled || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      // Strip markdown asterisks and URLs for natural speaking
+      const cleanText = rawText
+        .replace(/\*\*/g, '')
+        .replace(/\*/g, '')
+        .replace(/https?:\/\/\S+/g, '')
+        .replace(/—/g, '')
+        .replace(/₹/g, 'rupees ');
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn("TTS error:", e);
+    }
+  };
+
+  // Initialize Speech-to-Text
+  const startListening = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
+      return;
+    }
+
+    try {
+      if (isListening && recognitionRef.current) {
+        recognitionRef.current.stop();
+        setIsListening(false);
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-IN'; // Indian English / Hinglish
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        if (transcript) {
+          setInputMessage(transcript);
+          handleSendMessage(transcript);
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.warn("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error("Speech recognition start failed:", err);
+      setIsListening(false);
+    }
+  };
 
   const handleSendMessage = async (msgToSend = inputMessage) => {
     const text = (msgToSend || '').trim();
@@ -88,11 +173,11 @@ export default function EnergyCopilot({
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ]);
+        speakText(data.reply);
       } else {
         throw new Error("Backend response error");
       }
     } catch (err) {
-      // Fallback local smart response
       let localReply = `⚡ For **${household?.tariff_zone || 'Telangana'}**, shifting AC set temperature to 24°C and running high-wattage loads during 10 AM – 4 PM solar hours will cut your monthly invoice by up to 25%.`;
       if (text.toLowerCase().includes('solar')) {
         localReply = `☀️ For your ~${Math.round(predictionResult?.predicted_units || 320)} units monthly consumption, a **3kW Rooftop Solar System** qualifies for ₹78,000 direct PM Surya Ghar subsidy and pays for itself in ~3.4 years.`;
@@ -108,6 +193,7 @@ export default function EnergyCopilot({
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
+      speakText(localReply);
     } finally {
       setLoading(false);
     }
@@ -115,13 +201,24 @@ export default function EnergyCopilot({
 
   return (
     <>
-      {/* Floating Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating Trigger Button with Pulsing Badge */}
+      <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2">
+        {!isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#111111] border border-white/15 text-xs font-mono font-bold text-[#A3FF6B] shadow-lg"
+          >
+            <Sparkles className="w-3.5 h-3.5 animate-spin text-[#A3FF6B]" />
+            <span>Ask AI & Voice Assistant</span>
+          </motion.div>
+        )}
+
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="w-14 h-14 rounded-full bg-[#A3FF6B] text-[#0B0B0B] flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer border border-[#0B0B0B]/20"
-          title="Open AI Energy Copilot"
+          className="w-14 h-14 rounded-full bg-[#A3FF6B] text-[#0B0B0B] flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer border-2 border-[#0B0B0B]"
+          title="Open AI Energy & Voice Copilot"
         >
           {isOpen ? <X className="w-6 h-6 stroke-[2.5]" /> : <Bot className="w-7 h-7 stroke-[2.2]" />}
         </button>
@@ -134,7 +231,7 @@ export default function EnergyCopilot({
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 z-50 w-[92vw] sm:w-[420px] max-h-[580px] h-[580px] bg-[#111111] border border-white/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
+            className="fixed bottom-24 sm:bottom-24 right-3 sm:right-6 z-50 w-[94vw] sm:w-[440px] max-h-[580px] h-[580px] bg-[#111111] border border-white/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
           >
             {/* Chat Header */}
             <div className="p-4 bg-[#0B0B0B] border-b border-white/10 flex items-center justify-between">
@@ -144,7 +241,7 @@ export default function EnergyCopilot({
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#F5F3ED] flex items-center gap-1.5">
-                    <span>Voltra AI Copilot</span>
+                    <span>Voltra AI & Voice Assistant</span>
                     <span className="w-2 h-2 rounded-full bg-[#A3FF6B] animate-pulse" />
                   </h4>
                   <p className="text-[10px] font-mono text-[#8A8A84]">
@@ -153,13 +250,35 @@ export default function EnergyCopilot({
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="text-[#8A8A84] hover:text-[#F5F3ED] p-1.5 rounded-lg hover:bg-white/5 transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1.5">
+                {/* Voice Output Speaker Toggle */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (voiceOutputEnabled) window.speechSynthesis?.cancel();
+                    setVoiceOutputEnabled(!voiceOutputEnabled);
+                  }}
+                  className={`p-1.5 rounded-lg border transition ${
+                    voiceOutputEnabled 
+                      ? 'bg-[#A3FF6B]/15 text-[#A3FF6B] border-[#A3FF6B]/30' 
+                      : 'text-[#8A8A84] border-white/10 hover:text-white'
+                  }`}
+                  title={voiceOutputEnabled ? "Voice Speech Enabled" : "Voice Speech Muted"}
+                >
+                  {voiceOutputEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.speechSynthesis?.cancel();
+                    setIsOpen(false);
+                  }}
+                  className="text-[#8A8A84] hover:text-[#F5F3ED] p-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Chat Message Stream */}
@@ -205,6 +324,14 @@ export default function EnergyCopilot({
                   <span>Analyzing state tariff slabs & appliances...</span>
                 </div>
               )}
+
+              {isListening && (
+                <div className="flex items-center gap-2 text-xs font-mono text-red-400 p-2 bg-red-950/20 border border-red-500/30 rounded-xl animate-pulse">
+                  <Mic className="w-4 h-4 text-red-400 animate-bounce" />
+                  <span>Listening to your voice... Speak now!</span>
+                </div>
+              )}
+
               <div ref={chatEndRef} />
             </div>
 
@@ -224,7 +351,7 @@ export default function EnergyCopilot({
               </div>
             )}
 
-            {/* Message Input Box */}
+            {/* Message Input Box with Microphone Voice Button */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -232,17 +359,33 @@ export default function EnergyCopilot({
               }}
               className="p-3 bg-[#0B0B0B] border-t border-white/10 flex items-center gap-2"
             >
+              {/* Voice Microphone Input Button */}
+              <button
+                type="button"
+                onClick={startListening}
+                className={`p-2.5 rounded-xl border transition-all cursor-pointer flex-shrink-0 ${
+                  isListening
+                    ? 'bg-red-500 text-white border-red-500 animate-pulse'
+                    : 'bg-[#181818] text-[#A3FF6B] border-white/10 hover:border-[#A3FF6B]'
+                }`}
+                title={isListening ? "Listening..." : "Click to speak via Microphone"}
+              >
+                {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+              </button>
+
               <input
                 type="text"
-                placeholder="Ask about electricity bills, solar, Gruha Jyothi..."
+                placeholder={isListening ? "Listening... Speak now..." : "Ask in English, Hindi, Telugu..."}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 className="flex-1 bg-[#181818] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-[#F5F3ED] placeholder-[#8A8A84] focus:outline-none focus:border-[#A3FF6B]"
               />
+
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || loading}
-                className="p-2 rounded-xl bg-[#A3FF6B] text-[#0B0B0B] disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="p-2.5 rounded-xl bg-[#A3FF6B] text-[#0B0B0B] disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                title="Send message"
               >
                 <Send className="w-4 h-4" />
               </button>

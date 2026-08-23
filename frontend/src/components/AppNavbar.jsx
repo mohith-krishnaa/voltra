@@ -240,6 +240,17 @@ export default function AppNavbar({
             )}
           </div>
 
+          {/* AI Voice & Chat Assistant Button */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event('open-energy-copilot'))}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#A3FF6B]/15 border border-[#A3FF6B]/40 text-[#A3FF6B] hover:bg-[#A3FF6B]/25 text-xs font-mono font-bold transition-all cursor-pointer shadow-xs"
+            title="Open AI & Voice Energy Assistant"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#A3FF6B] animate-ping" />
+            <span>Ask AI & Voice</span>
+          </button>
+
           {/* Hotline Number */}
           <a
             href="tel:1912"
