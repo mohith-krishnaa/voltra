@@ -1,11 +1,14 @@
 """
 Smart Electricity Bill Predictor - Security, Hashing & JWT Authentication
+Uses Python standard library hashlib (PBKDF2-SHA256) for zero-dependency native compatibility.
 """
 
+from __future__ import annotations
 import os
 import datetime
+import hashlib
+import secrets
 from typing import Optional, Dict, Any
-import bcrypt
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -19,25 +22,25 @@ ACCESS_TOKEN_EXPIRE_DAYS = 30
 
 security_bearer = HTTPBearer(auto_error=False)
 
+def get_password_hash(password: str) -> str:
+    """Generates PBKDF2-SHA256 hash of password safely using standard library."""
+    salt = secrets.token_hex(16)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
+    return f"{salt}${key.hex()}"
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifies a plain password against stored bcrypt hash."""
+    """Verifies a plain password against stored hash."""
     try:
         if not plain_password or not hashed_password:
             return False
-        # Truncate to 72 bytes as required by bcrypt
-        pwd_bytes = plain_password.encode('utf-8')[:72]
-        hash_bytes = hashed_password.encode('utf-8')
-        return bcrypt.checkpw(pwd_bytes, hash_bytes)
-    except Exception as e:
-        print(f"[Security] Password verification error: {e}")
+        if "$" in hashed_password:
+            salt, stored_hash = hashed_password.split("$", 1)
+            key = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt.encode('utf-8'), 100000)
+            return secrets.compare_digest(key.hex(), stored_hash)
         return False
-
-def get_password_hash(password: str) -> str:
-    """Generates bcrypt hash of password safely."""
-    # Truncate to 72 bytes as required by bcrypt
-    pwd_bytes = password.encode('utf-8')[:72]
-    salt = bcrypt.gensalt(rounds=12)
-    return bcrypt.hashpw(pwd_bytes, salt).decode('utf-8')
+    except Exception as e:
+        print(f"[Security] Password verification notice: {e}")
+        return False
 
 def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None) -> str:
     """Encodes JWT claims with expiration."""
