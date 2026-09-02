@@ -1,130 +1,117 @@
-# ⚡ VoltCast - Smart Electricity Bill Predictor & Insights Engine
+# VoltCast — Smart Electricity Bill Predictor & Insights Engine
 
-> **AI-powered electricity bill forecasting, slab-based utility tariff calculations, daily adaptive tracking, and What-If simulator.**
+VoltCast is an electricity-bill forecasting and insights project that combines appliance-based usage estimates, progressive utility tariff calculations, daily tracking, explainability, and a What-If simulator.
 
----
+**Live demo:** [voltra-iota.vercel.app](https://voltra-iota.vercel.app)
 
-## 🌟 The Problem & Human Need
-People have no idea what their electricity bill will be until it arrives in the mailbox — by then it's too late to do anything about it. Heavy AC use during a heatwave, guests staying over, or inefficient water heaters result in nasty financial surprises.
+> **Evaluation boundary:** the forecasting model is trained from physics-grounded synthetic records. Reported metrics describe the model’s evaluation on that generated data; they are not a guarantee of accuracy for a household’s future bill. Record actual bills and compare them over time before treating the forecast as reliable.
 
-**VoltCast solves this by predicting your electricity bill before it arrives**, explaining exactly which appliance is driving it up, and adapting day-by-day so you can course-correct before the billing cycle closes.
+## Feature surface
 
----
+| Capability | Description |
+|---|---|
+| Monthly forecast | Estimates monthly kWh and bill amounts using a scikit-learn regression model |
+| Tariff engine | Computes progressive slabs for supported tariff presets and itemizes energy, fixed, and duty charges |
+| Explainability | Ranks appliance contribution using charts and tables |
+| What-If simulator | Models changes such as appliance runtime adjustments and shows estimated bill or carbon differences |
+| Daily tracking | Accepts daily readings and adapts the projection as the billing cycle progresses |
+| Household history | Supports household or meter records and actual-bill capture for later validation |
 
-## 🚀 Key Features
+## Architecture
 
-1. **AI Monthly Forecast**:
-   - High-accuracy Scikit-Learn `RandomForestRegressor` ($R^2 \approx 0.97$) estimating monthly kWh and bill amounts ($₹$).
-   - Grounded in realistic appliance wattages, seasonal weather multipliers, inverter duty cycles, and standby losses.
-
-2. **Progressive Slab-Based Tariff Engine**:
-   - Computes realistic utility bills using tiered progressive slabs (TNEB, BESCOM, MSEDCL, Generic Standard, and Green Tariffs).
-   - Itemized receipts showing base energy charges, fixed meter charges, and state electricity duties.
-
-3. **Appliance Breakdown & Explainability**:
-   - Visual Doughnut, Bar, and Table charts ranking power consumption (e.g. *"Your AC is 48% of your bill"*).
-
-4. **Live "What-If" Simulator**:
-   - Drag sliders in real-time to simulate behavioral modifications (e.g. reducing AC runtime by 2 hrs or upgrading to BLDC fans) and see immediate monthly and annual $₹$ savings and carbon offset ($\text{kg CO}_2$).
-
-5. **Daily Usage Tracking & Adaptive Forecast**:
-   - Log daily meter or appliance readings.
-   - 5-to-7 day exponentially weighted rolling projection that adapts as the month goes on.
-   - 30-Day Month-To-Date (MTD) vs Target Budget trajectory curve.
-
-6. **Mid-Month Overage Warnings**:
-   - Automated alerts if current pace exceeds budget threshold (e.g. $+25\%$ pace warning) with immediate recovery tips.
-
-7. **Multi-Household & Historical Trust Validation**:
-   - Track multiple homes or meters.
-   - Record actual physical utility bills when they arrive to verify model accuracy over time.
-
-8. **1-Click Judge / Demo Presets**:
-   - Instant 1-click test personas for presentations:
-     - 🔥 2BHK Summer Surge (Heavy AC)
-     - 🌱 1BHK Eco Minimalist
-     - 💻 3BHK Work-From-Home Techie
-     - ⚡ Luxury Villa with EV
-
----
-
-## 🛠️ Architecture & Tech Stack
-
-```
-bill-predictor/
-├── data/
-│   ├── generate_dataset.py       # Physics-grounded synthetic generator (12,000+ records)
-│   └── electricity_data.csv      # Historical training dataset
-├── model/
-│   ├── train_model.py            # RandomForest ML regression trainer
-│   ├── train_daily_model.py      # Short-term adaptive rolling forecaster
-│   └── bill_model.joblib         # Serialized ML pipeline & scaler
-├── backend/
-│   ├── app.py                    # FastAPI entrypoint + startup seeding
-│   ├── database.py               # SQLite / PostgreSQL SQLAlchemy engine
-│   ├── models_db.py              # User, Household, DailyLog, Alert models
-│   ├── tariff.py                 # Multi-tier progressive slab calculator
-│   ├── recommendations.py        # Tailored savings advice engine
-│   ├── adaptive.py               # 5-day rolling MTD budget pace monitor
-│   ├── routes/
-│   │   ├── auth.py               # JWT authentication & bcrypt hashing
-│   │   ├── predict.py            # Monthly & What-If prediction endpoints
-│   │   ├── daily_log.py          # Daily readings CRUD & forecast
-│   │   ├── alerts.py             # Mid-month pace notifications
-│   │   └── households.py         # Multi-meter management
-│   └── utils/
-│       ├── security.py           # Token encoding/decoding
-│       └── validation.py         # Physical bounds sanitization
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx               # Main React Dashboard
-│   │   ├── components/           # MonthlyPredictor, WhatIfSimulator, DailyTracker, etc.
-│   │   └── index.css             # Tailwind & Glassmorphism design system
-│   ├── package.json
-│   └── vite.config.js
-└── tests/
-    ├── test_model.py             # ML pipeline tests
-    ├── test_tariff.py            # Progressive slab unit tests
-    └── test_api.py               # FastAPI integration tests
+```text
+React frontend
+   │
+   ├── Monthly predictor
+   ├── What-If simulator
+   ├── Daily tracker and charts
+   └── Household and alert views
+   │
+FastAPI backend
+   ├── Authentication and users
+   ├── Prediction and daily-log routes
+   ├── Progressive tariff calculator
+   ├── Adaptive forecast logic
+   └── SQLite / PostgreSQL persistence
+   │
+Model and domain logic
+   ├── Synthetic dataset generation
+   ├── RandomForest regression
+   └── Tariff, validation, and recommendation modules
 ```
 
----
+## Repository structure
 
-## 💻 Quick Start & Running Locally
+```text
+.
+├── backend/                 FastAPI application and domain routes
+├── data/                    Dataset generation and training data
+├── frontend/                React/Vite dashboard
+├── model/                   Training scripts and serialized model
+├── tests/                   Model, tariff, API, and auth tests
+├── package.json             Frontend build shortcut
+├── requirements.txt         Python dependencies
+└── README.md
+```
 
-### 1. Backend Setup & Training
+## Run locally
+
+### Backend
+
+From the repository root:
+
 ```bash
-# Clone or navigate to the directory
-cd C:\Users\JAGAN\.gemini\antigravity\scratch\bill-predictor
+python -m venv .venv
+# macOS / Linux
+source .venv/bin/activate
+# Windows PowerShell
+# .venv\Scripts\Activate.ps1
 
-# Install dependencies
 pip install -r requirements.txt
-
-# Generate synthetic dataset and train ML model
-python data/generate_dataset.py
-python model/train_model.py
-
-# Launch FastAPI backend server
 python -m uvicorn backend.app:app --reload --port 8000
 ```
-- API Docs: `http://localhost:8000/docs`
 
-### 2. Frontend Setup
+API documentation is available at `http://localhost:8000/docs` when the backend is running.
+
+### Frontend
+
+In a second terminal:
+
 ```bash
 cd frontend
-
-# Install node dependencies
 npm install
-
-# Start Vite dev server
 npm run dev
 ```
-- Frontend UI: `http://localhost:5173`
 
----
+The Vite development server is normally available at `http://localhost:5173`.
 
-## 🧪 Running Automated Tests
+### Model training
+
+If you need to regenerate the model, inspect the scripts in `data/` and `model/` first, then run the project’s dataset-generation and training commands in the documented order. Keep generated datasets and evaluation output clearly labeled as synthetic or validation data.
+
+## Tests and build
+
 ```bash
-cd C:\Users\JAGAN\.gemini\antigravity\scratch\bill-predictor
 pytest tests/ -v
+npm run build
 ```
+
+The repository includes tests for model behavior, tariffs, API behavior, and payment/auth flows. When extending the forecasting logic, add a fixture that compares a prediction against a known tariff or appliance scenario rather than relying only on an aggregate score.
+
+## Data and safety notes
+
+VoltCast is a planning and educational tool, not a utility bill guarantee or financial product. Tariffs vary by provider and change over time. Appliance wattage, weather multipliers, duty cycles, and synthetic assumptions can differ from real household behavior. The interface should surface the tariff preset, data timestamp, and synthetic-data boundary wherever a forecast is shown.
+
+Do not commit production secrets, JWT keys, database credentials, or real household data. Use environment variables and keep local or generated data out of public commits unless it is intentionally anonymized and documented.
+
+## Roadmap for stronger evidence
+
+The most valuable next proof points are a reproducible train/evaluate command, baseline comparisons, error metrics on held-out synthetic records, a clearly labeled real-bill validation workflow, and a deployment checklist covering secrets, database migrations, and authentication configuration.
+
+## License
+
+See the repository for the applicable source-code license.
+
+## Author
+
+**Mohith Krishnaa** — [@mohith-krishnaa](https://github.com/mohith-krishnaa)
